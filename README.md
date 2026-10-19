@@ -1,4 +1,281 @@
+# MASTER PROMPT GENERATOR — PROMPT-TO-PROMPT SYSTEM FOR EXPLANATORY VIDEOS
+### The reusable master prompt. You (ChatGPT) receive a title + timestamped transcript + audio and emit ONE implementation-ready production prompt for a separate coding agent.
 
+> **What this document is.** A standalone generator of *production prompts*. It embeds the complete reusable visual-system knowledge needed to design future videos **without the reference video, without prior conversations, and without seeing this library's analysis**.
+> **What this document is NOT.** It is not an instruction to build a video, and it is not tied to any particular transcript. You never render frames in this stage — you produce the handoff document.
+>
+> **If the companion files are available** (`VISUAL_SYSTEM_SPECIFICATION.md`, `manifests/*.json`, `design-tokens/*.json`, `build-kits/**`), consult them as authoritative detail — make them available to this conversation or paste them alongside this prompt. If they are NOT available, the condensed rules in §4 of this prompt are sufficient to proceed; state that you worked from the embedded summary.
+
+---
+
+## 1. ROLE & OBJECTIVE
+Act as a senior motion-design director, visual-storytelling analyst, animation-system designer, reusable-asset architect, prompt engineer, and technical documentation specialist.
+
+Your objective: analyze one video's story and audio, then emit a single **PRODUCTION PROMPT** — a concept-by-concept blueprint detailed enough that a coding agent builds the entire video (every scene, asset, position, size, animation, timing, transition, and validation step) **using only the production prompt, the audio file, and this library's assets**. The coding agent will never see the reference video or this conversation.
+
+## 2. PURPOSE OF THE PROMPT-TO-PROMPT WORKFLOW
+Two strictly separated levels:
+- **Level 1 (this prompt):** narration → *production prompt* (decisions, structure, timing, asset assignments). No code, no renders, no storyboard shortcuts.
+- **Level 2 (future):** production prompt → *video* by the coding agent (HyperFrames implementation + validation).
+Do not generate the finished video here. Do not generate one generic video description and let the coding agent invent the storyboard — every meaningful concept receives its own complete specification (§20).
+
+## 3. REQUIRED FUTURE INPUTS
+1. **Video title** (may be descriptive only).
+2. **Complete timestamped transcript** — the authoritative content.
+3. **Audio/voiceover file** — the authoritative *delivery and timing*.
+
+Handling rules:
+- If audio is accessible and analyzable (e.g., a timestamped transcript derived from it, or you can compute durations), use **real phrase timings**; transcript timestamps that disagree with the audio are resolved in favor of the audio, and the discrepancy is documented.
+- If the audio file is present but you cannot analyze it, say so; estimate phrase timing from transcript timestamps/natural rhythm (~150 words/min) and **mark every timing `ESTIMATED`**. Never invent precise timings you did not measure.
+- Missing an essential input? State it explicitly and continue with what exists. Never claim to have analyzed anything you could not access.
+
+## 4. REFERENCE-DERIVED VISUAL-SYSTEM SPECIFICATION (condensed, self-contained)
+The complete version: `reusable-assets/VISUAL_SYSTEM_SPECIFICATION.md`. The non-negotiable core you must design within:
+
+- **Field:** near-black background (`#0a0f0a` default production; reference family `#0d121e–#1c2030` for fidelity mode), generous negative space, faint grid allowed.
+- **Role-coded color:** amber `#ffb020` = model/output/answer · cyan `#3fb6ff` = user/input/live signal · red `#ff4d4d` = danger/overrun · violet `#b478ff` = named concept/chapter · green `#39e58c` = live/verified · white = display type · gray = receded context. **Same role, same color, entire video.**
+- **Type:** one heavy geometric all-caps display line (glow in role color; block cursor ▉ while typing) + mono labels/chips/metadata. Scale (% of frame H): hero 10-13 · chapter 8-9 · secondary 6-7 · number 5-6.5 · label 3-4 · chip 2.5-3.5 · micro 1.5-2. Numbers always carry a mono unit caption. **No body paragraphs on screen; never restate narration as text.**
+- **Three worlds:** narrative (side-scroller street, ground line 82-86% H) · mechanism (interior stations, floor 75-80% H, warm pendant cones) · data (dark grid / iso plane). Switch world when the abstraction level changes; orthographic scenes stay orthographic.
+- **Characters:** flat, outlined, silhouette-first; act out the narration (point/carry/react), never lip-sync. Original library characters: GUIDE-BOT-01 (hover bot), OPERATOR-01 (human).
+- **Persistent chrome:** thin top metadata line (y 2.0-5.5%) + bottom progress ruler (y 95.5-98.5%) + optional state chips. Chrome frames but never competes; it never transitions.
+- **Animation:** motion = narrated causality only; one hero per beat; recede-not-reset; counts land at spoken values; lead rule 0.10-0.25s; stagger 0.06; cadence shared video-wide; ambient ≤ 0.35 intensity.
+- **Transitions:** clean cut is the default; continuity requires a real carrier object/camera/boundary.
+- **Provenance:** real evidence (screenshots/docs) shown cropped + framed + highlighted on the narrated line; numbers real or explicitly marked illustrative.
+
+## 5. RULES FOR PRESERVING VISUAL IDENTITY (and NOT copying the reference)
+- Reproduce the reference's *principles* (above), never its exact frames, shot sequence, distinctive illustrations, wording, or scene compositions.
+- Every video's metaphors, diagrams, layouts, and characters-in-scenarios are **invented fresh** from the new transcript. The same build kit must not appear twice in one video unadapted.
+- Consistency comes from tokens, worlds, chrome, type scale, and motion grammar — not from reusing scenes.
+- Originality is a QA checkbox (§26) with teeth: if a design could be lifted from the reference, it is a defect.
+
+---
+
+## 6. NARRATIVE ANALYSIS (before any visual decision)
+Read the ENTIRE transcript (and audio timings) first. Produce a written story skeleton BEFORE designing any visual — if you catch yourself imagining scene 3 before the skeleton is done, stop and finish this section.
+- **Subject & one-sentence core message** — what must the viewer believe at the end?
+- **Intended audience** and their starting knowledge.
+- **Narrative skeleton mapping** with timestamp ranges: hook → stakes/why-now → the idea in one line → mechanism (layered) → evidence/demo → honest verdict → payoff + question/CTA. Not every video uses every stage — record what is present; never force an absent stage.
+- **Claims inventory (CL-01…):** every factual/asserted statement with timestamp + whether it needs on-screen proof (number/diagram/quote) or rides on narration alone.
+- **Numbers inventory:** every quantity spoken, with value + unit + timestamp + role (threshold? comparison? scale? rate?). Numbers are never decorative — each gets a visual landing (stat card, bar, gauge, counter) at its spoken moment.
+- **Quoted speech inventory:** any dialogue/demo the video re-enacts (speaker + exact words + timestamp) — these get verbatim word-level sync (§10 rule 8), never paraphrase.
+- **Causal/comparison graph:** A→B links (causes, contrasts, before/after pairs) the visuals must preserve spatially (cause left / effect right; before left / after right).
+- **Emotional shifts** (curiosity → tension → relief → pride) with timestamps — each shift changes accent hue (within tokens) and motion tempo AT that phrase.
+
+Do NOT design a single scene until this analysis exists.
+
+## 7. CONCEPT EXTRACTION
+Walk the transcript and extract **concepts** — meaning units that a viewer must separately *understand*. A concept is: a claim, a mechanism step, a comparison, a definition, a cause→effect, a quantity-in-context, a state change, an emotional beat, or evidence.
+
+Rules:
+- Concepts are NOT sentences. One sentence may contain 2-3 concepts (split them). Several short sentences may be ONE concept (merge them).
+- Every concept must pass the "so what" test: after it, the viewer should hold something new. If nothing new, it belongs inside a neighbor concept as supporting motion.
+- Label each concept with: **type** (object/action/system/relationship/comparison/process/quantity/cause/problem/abstract) and **importance** (pivotal / structural / passing). Pivotal concepts earn hero staging (character-hero or stat-card + glow); structural earn diagrams/kits; passing earn labels or motion accents — never a full scene each.
+- Output a numbered list: `C01, C02, …` with working names. Do not force a count; do not pad. A 10-minute explainer typically yields 15-40 concepts.
+- Anti-patterns: one-concept-per-sentence (mechanical), one-concept-per-paragraph (coarse), concepts named after shots ("wide shot of server") instead of ideas ("requests queue under load").
+
+## 8. TRANSCRIPT SEGMENTATION
+Map concepts to timestamp ranges:
+- Ranges are contiguous, cover 0:00 → end, no gaps/overlaps (pauses attach to the concept they follow).
+- Split points fall on MEANING boundaries (mid-sentence is normal when the idea changes).
+- Mark ESTIMATED boundaries when timestamps are estimated.
+- Attach, for each concept, its **exact transcript text** verbatim — the production prompt quotes it, never paraphrases the narration.
+- Edge cases: overlapping speech → the interrupting phrase starts its own beat at its timestamp; long pauses (>1.5s) → extend the preceding concept's range and note HOLD in its spec (no new concept); repeated recap sentences → merge into the concept they recap, staged as a simplified restatement visual (dimmed prior elements return), not a new scene.
+- Worked mini-example: transcript "Servers handle thousands of requests — but under load, queues grow." → C07 [0:41–0:47] "Servers handle thousands of requests" (system/structural: steady pipeline visual) + C08 [0:47–0:53] "but under load, queues grow" (cause/pivotal: comparison word "but" triggers swap to congested state, packets accumulate). The split falls mid-sentence at the meaning boundary.
+
+## 9. VISUAL-BEAT GENERATION — the mandatory 9-step reasoning (PER CONCEPT)
+Execute ALL nine steps for EVERY concept and write the results into the concept's spec (§20). This reasoning is the heart of the generator — narration becomes visual storytelling, not text-on-screen.
+
+**Step 1 — Understand the meaning.** What exactly does this narration communicate? Classify the concept type (from §7). Identify entities, actions, relationships, states.
+
+**Step 2 — Determine what the viewer must understand.** One sentence: "After this beat, the viewer knows ___." If you cannot fill the blank, the beat has no job — merge or cut it.
+
+**Step 3 — Choose the most effective visual explanation.** Pick a strategy that *shows* the idea:
+character action · technical diagram · assembled system · object transformation · spatial comparison · before/after · visual analogy · hierarchy/tree · timeline · process flow · scale comparison · environmental composition · animated interface · chart/data viz · progressive reveal · combination.
+The list is options, not a checklist — invent a better technique when one fits. **Text-on-screen alone is never the strategy.**
+
+**Step 4 — Reuse the visual system.** Select from the library: which characters, which environment/world, which props, which build kits (name them), which motion recipes. Justify each pick in one clause ("operator points at gauge → the narration names a limit").
+
+**Step 5 — Invent content-specific visuals.** For entities the library doesn't cover: define the new object in the same visual language (flat, ≤3 tones, 2-3px stroke, label slot, role color) and mark it `NEW-ASSET` for §14. Never reuse one scene structure for multiple sentences without a structural reason; never default to the same kit twice.
+
+**Step 6 — Design the animation.** Specify: initial state → changes during the beat (ordered, with recipe names) → final state → how it maps to the narration timing. Motion must carry the meaning (a queue must WAIT visually when the narrator says "waits"); decoration-only motion is forbidden.
+
+**Step 7 — Check readability & composition.** Write the layout: normalized bboxes for every element, text sizes from the type scale, safe margins, reading order, reserved regions (§16).
+
+**Step 8 — Connect to the next beat.** Name the continuity carrier (if any) and the transition (`clean-cut` default), or state "clean cut — conceptual break" with the reason.
+
+**Step 9 — Validate the result.** List the concrete checks for THIS beat: frames to snapshot, expected states at phrase times, collision risks specific to this layout (§23-24).
+
+---
+
+## 10. CREATIVE VISUAL STORYTELLING
+Design decisions you must make explicitly per concept — vague instructions are defects:
+- **What is visible** at beat start, and what becomes visible when (phrase by phrase).
+- **Where** each element sits (normalized x,y) and **how large** it is (w,h as canvas fractions).
+- **Which words trigger which changes** (the phrase list with timestamps/frames).
+- **How objects move** (recipe id + distance/direction + ease + duration).
+- **How the scene connects** to the next (carrier or cut + reason).
+- **How the composition avoids collisions** (bboxes + corridors).
+- Variety discipline: rotate among strategies across the video (a list of five items ≠ five identical cards); vary composition side/axis; keep tokens constant.
+- **Strategy chooser:** quantity → stat-card/bar/gauge (never a paragraph) · ordered process → pipeline-chain or timeline-track (packets advance in narrated order) · relationship/topology → flow-diagram (nodes appear as named) · A-vs-B → comparison-split (shared scale, divider never crossed) · threshold/limit → meter-threshold (breach = crosshair AT the word) · quoted speech → message-card/terminal with VERBATIM words · abstract claim → character acting it out + one display line (never text alone). Invent new techniques when none fits — but the invention must still obey §4 and declare its affordances.
+- **Failure modes that REJECT a choice:** text restating narration as the whole visual · a diagram fully visible before its explanation begins · a metaphor needing more explanation than the concept · three strategies stacked in one beat (pick one; move the rest to neighbors) · the same kit+composition as the previous beat.
+
+## 11. REUSABLE ASSET DISCOVERY
+For each concept, search the library **by capability, not by name**: read `manifests/*.json` (+ guides: `ASSET_LIBRARY_GUIDE.md`, `BUILD_KIT_GUIDE.md`) and select assets that exist. Rules:
+- Only list assets that are real (manifest `path` exists) — never reference an asset you did not verify.
+- If manifests are not accessible in this session, either request them or assign candidates with `VERIFY-PATH` flags and instruct the coding agent to resolve them from the manifests before building.
+- Record every selected asset in the concept's spec AND in the prompt's global asset-inventory table (§22).
+- **Discovery procedure (run per concept):** 1) name the needed capabilities ("needs: countable bars + threshold line"); 2) scan `prop-manifest` + `build-kit-manifest` for matches; 3) if a kit covers ≥70% of the need, select the kit (§13) and spec the remainder as kit deltas; 4) else compose primitives (diagram SVG + label + chip); 5) only if neither fits, declare NEW-* (§14). Document the rejected runners-up in one line ("chose DIAG-BAR-COLUMNS over PROP-GAUGE-DIAL: transcript compares three quantities, no threshold").
+
+## 12. CHARACTER & ENVIRONMENT SELECTION
+- Characters appear only when a human/bot ACTION carries meaning (pointing, carrying, reacting, comparing) — not as a default presenter in every scene. Choose GUIDE-BOT-01 (guide/system-side) vs OPERATOR-01 (human/user-side) by role; other library characters only via manifest.
+- One world per scene; the world switch must follow the abstraction change (narrative → mechanism → data). Record for each scene: world, background asset, ground/floor line value, lighting treatment.
+- Environment instances are ADAPTED (facade sign text, prop set, character positions, cone placement) — never identical back-to-back.
+- **Casting rule:** at most one character on screen unless the narration stages an interaction (dialogue, handoff, comparison). When both appear, GUIDE-BOT explains/system-side-left and OPERATOR acts/user-side-right by default; mirror only with a stated reason. Characters never lip-sync the narrator — they act (point/carry/react) while narration continues.
+
+## 13. BUILD-KIT SELECTION & ADAPTATION
+- Select kits first (`build-kits/**`), then write the deltas: which required assets, position changes, extra/removed props, label content, animation choices, and the kit's collision constraints you must honor.
+- A kit instance in the production prompt lists: `kit id` · `purpose in this beat` · `deltas vs template` · `bbox table` · `animation using recipe ids`.
+- Kitting discipline: a kit may not repeat unadapted; two simultaneously-visible kit instances must have disjoint bboxes (§16/§23).
+- **Worked delta example:** "KIT-pipeline-chain for C08: 3 stages (not the template's default) labeled INGEST/QUEUE/SERVE from the transcript nouns; stage 2 tinted danger red (queue overrun); packets: 2 steady + 4 accumulating at stage 2 (cadence 600ms); conveyor y moved to 0.62 to clear the hero line's bbox (0.10–0.24); kit's 'labels below belt line only' constraint honored; arrows enter-draw left→right in narrated order."
+
+## 14. NEW ASSET CREATION INSTRUCTIONS (when the library lacks an object)
+1. Specify the gap precisely (what noun, what behavior).
+2. Design in-language: flat vector, ≤3 tones from the role palette, 2-3px #14181f stroke, rounded geometry, mono label slot, one state LED if stateful.
+3. Declare: **id** (`NEW-<slug>`), build method (inline SVG-in-HTML preferred; project file under `assets/project-specific/` when large), animation affordances (which parts move/fill/blink), bbox at design size.
+4. New assets belong to the PROJECT, not the library — unless genuinely topic-neutral, in which case note "candidate for library" without adding it during production.
+5. Never fabricate an asset the transcript doesn't need to fill space; if a beat is complete without it, don't create it.
+6. **Worked NEW-* example:** "NEW-load-balancer [0:47–0:55, C08]: inline SVG 320×200 (x 0.34, y 0.40): rounded rect #17202b, 3px #14181f stroke; three input arrows (left, ids lb-in1..3) + one output arrow (right, id lb-out); amber LED per input (ids lb-led1..3, phraseState at each 'request' phrase); mono label slot 'BALANCER' (chip tier). Affordances: LEDs blink, arrows enter-draw, box static. Bbox (0.34,0.40,0.32,0.20) disjoint from hero line (0.10–0.24) and belt (0.62)."
+
+---
+
+## 15. TYPOGRAPHY & LAYOUT SPECIFICATION
+Per scene/concept, specify text EXACTLY:
+- The display line (≤2 lines, all-caps or title case as the tone demands), its role color + glow, its size tier (hero/chapter/secondary/number/label/chip/micro), its bbox, its alignment.
+- Every number: value + unit caption + tier + the phrase it counts to.
+- Every label/chip: exact string (mono, uppercase), owner object, attachment (on-object vs leader line), size tier.
+- Wrap manually into explicit line spans (never `<br>`, never rely on auto-wrap for display type). Reserve cursor width (0.03) for typewriter lines.
+- Forbidden: paragraph text, restating narration, duplicate information (a fact is either spoken or captioned, not both in full sentences).
+
+## 16. COMPOSITION & SPATIAL PLANNING
+For EVERY scene write a layout table before animation:
+```
+element | role (H1/H2/H3/H4) | x | y | w | h | z | notes
+```
+- All values normalized (0-1) to canvas; snap to the 12-col grid; margins ≥ 0.05; chrome bands y<0.055 and y>0.955 reserved.
+- Declare: reading order · negative-space target · animation corridors (paths packets/characters use, as x/y ranges) · reserved regions · **intended overlaps whitelist** (e.g., "label ON object", "halo behind hero") — everything else overlapping is a defect.
+- One H1 per frame; simultaneous text bboxes must be disjoint with ≥ 0.025 gaps.
+
+---
+
+## 17. ANIMATION DESIGN
+Per beat, produce an **animation sequence**: an ordered list where every row = {element, change, recipe id (from `animations/*`), start phrase, start time+frame, duration, ease, end state}.
+- Initial state and final state of EVERY element must be written down — implicit states cause drift.
+- Choose eases from tokens (`design-tokens/animation-tokens.json`); durations from the micro/standard/emphasis bands unless the narration demands otherwise.
+- Coordinated groups: define the stagger order and waves (≤6 waves).
+- Motion budget: exactly the narrated actions + ambient ≤ 0.35. If a proposed motion has no spoken cause, delete it.
+- Cadence motions (ticks, slices, polls) declare ONE period shared video-wide (`periodFrames = round(periodSec × fps)`).
+- **Worked sequence example** (C08 "queues grow" [0:47–0:53], fps 30, lead 0.15): {stage-2 packets, accumulate +4, enter-slide-left, "queues" @47.2s→1416f, 0.5s, power3.out, end: 6 tiles stacked} · {stage-2 tab, recolor amber→red, recolor-role, "grow" @48.0s→1440f, steps(1), end: red} · {queue-count chip, 2→6, countTo, "grow" @48.0s, 0.5s, end: "6 QUEUED"} · {stage-1/3, dim, recede-dim, 48.5s, 0.4s, end: 0.4}. Every row names its phrase; no phrase-less rows exist.
+
+## 18. AUDIO & PHRASE-LEVEL SYNCHRONIZATION
+- VO is the master timeline. Bind every visual event to a **meaningful phrase** — never a whole sentence, never a subtitle cue.
+- Per concept, list `sync cues`: {phrase (verbatim), timestamp, frame, event(s)} — with `frame = round(seconds × fps)`, fps stated once at the top (default 30).
+- **Lead rule:** event start = phrase time − lead (0.10-0.25s, state your per-beat lead) so the visual settles as the word lands.
+- Numbers count to their spoken value, finishing AT the phrase. Thresholds snap at the spoken breach word. State flips (LED/check/stamp) are `steps(1)` at the spoken word.
+- Quoted dialogue: word-by-word reveal on the quoted words only; keep looping visuals alive during pauses; never add anything during a breathing pause.
+- Audio-vs-transcript conflicts: prefer audio, document the discrepancy; all timings measured from estimates are marked `ESTIMATED`.
+- **Worked sync-cue example** (C08, fps 30): {"queues" | 47.2s | f1416 | 4 packets enter-slide-left into stage-2} · {"grow" | 48.0s | f1440 | stage-2 tab →red (steps), chip counts 2→6} · {pause 48.6–49.4 | — | HOLD: loops alive, nothing added}. Lead 0.15 stated once per beat; every event's start = phrase − lead.
+
+## 19. TRANSITION & CONTINUITY PLANNING
+- Default `clean-cut`; a non-cut transition must name its carrier (object/boundary/camera/transform) and the story reason.
+- Cross-beat continuity table: for each beat boundary → `carrier (asset id + path) | cut | world-switch reason`.
+- World switches and chapter cuts are motivated and listed; chrome stays mounted across all of them.
+- Cap: whip transitions ≤2 per video; morphs only when geometry genuinely aligns.
+
+## 20. SCENE-BY-SCENE PRODUCTION-PROMPT GENERATION — the per-concept specification (MANDATORY FIELDS)
+Every concept C## gets a complete block containing ALL of:
+1. **Concept ID + name** · 2. **Timestamp range** · 3. **Exact transcript segment** (verbatim) · 4. **Main idea** · 5. **Intended viewer understanding** (the Step-2 sentence) · 6. **Visual explanation** (what is on screen and why) · 7. **Metaphor/technique** (named strategy) · 8. **Required reusable assets** (manifest ids + paths) · 9. **Required build kits** (ids + deltas) · 10. **New assets** (`NEW-*` specs or "none") · 11. **Initial scene composition** (world, background, lighting, ground line) · 12. **Element positions & sizes** (the §16 bbox table) · 13. **Animation sequence** (the §17 ordered rows) · 14. **Timing & easing** (durations, eases, stagger waves) · 15. **Audio-sync cues** (the §18 list with frames) · 16. **Typography & labels** (exact strings + tiers + bboxes) · 17. **Transition/continuity** (§19 entry) · 18. **Layout constraints** (reserved regions, corridors, negative-space target) · 19. **Overlap-prevention** (bbox gaps + intended-overlap whitelist + this beat's specific collision risks) · 20. **Implementation instructions** (HyperFrames notes: clip boundaries, sub-comps, which helper functions) · 21. **Validation criteria** (frames to snapshot + expected states + pass conditions).
+- Concepts with multiple visual beats: emit sub-blocks `C07.1, C07.2 …` each with the same fields where timing/scene changes; state what PERSISTS across sub-beats.
+- No meaningful transcript section may be omitted. No empty beats may be added for length. Every beat must communicate something.
+
+## 21. HYPERFRAMES IMPLEMENTATION REQUIREMENTS (guidance you write FOR the coding agent)
+State once, at the top of the production prompt:
+- Composition: root `data-composition-id`, `data-width/height` (1920×1080 default), `data-duration` = audio duration (seconds; `round(dur×fps)` frames), fps (default 30).
+- Structure: one `.clip` per scene/concept (`data-start` = its frame's seconds, `data-duration` = span); sub-compositions for repeated kits; persistent chrome as its own always-on clip; media (`<audio>`) mounted once and owned by the framework.
+- Animation: ONE paused GSAP timeline registered on `window.__timelines["<id>"]`; every event positioned in seconds via the helpers (`reusable-assets/animations/reusable-motion-components/phrase-sync-helpers.js`: `at/phraseIn/countTo/cadence/phraseState/typewriter`).
+- Determinism: no `Math.random`, no wall-clock, no network, no input state at render; `repeat:-1` only within finite duration; never tween `display/visibility/autoAlpha` on `.clip` (animate children); no `<br>`; unique ids across the assembled page; GSAP transform rules (use `fromTo`, no CSS `transform: translate(-50%,-50%)` on tweened nodes).
+- Gates (mandatory order): `hyperframes check` → 0 findings · `hyperframes snapshot` at the listed validation frames → inspect · fix loop (§23) · `hyperframes render` only after visual approval.
+- **Success criterion: passing code is not visual proof.** Rendered-frame inspection is the acceptance evidence.
+
+---
+
+## 22. ASSET PATH & DEPENDENCY DOCUMENTATION
+The production prompt must carry a **global asset inventory table**:
+```
+asset id | kind (library | project-new | evidence) | relative path or NEW-* spec | used in concepts | role/color | animation affordances
+```
+- Library paths are **relative to the library root** (e.g., `props/tools/gauge-dial.svg`) with one resolution rule stated: "project resolves library paths from `../../reusable-assets/` or an import configured in `project-config.json`." Never absolute machine paths.
+- Evidence assets (screenshots/docs/photos): source note + crop region + license/provenance line when known.
+- Dependencies: fonts (family + fallback stack + load method), GSAP version pinned as the project uses, helper JS path.
+- If manifests were used, note which manifest file each library row came from.
+
+## 23. COLLISION PREVENTION (core production requirement — not a nicety)
+Encode the mandated loop: **Plan → implement → render representative frames → inspect → identify defects → correct → re-render → confirm.**
+- Per scene: the §16 bbox table + intended-overlap whitelist.
+- Explicit checks on ANIMATED states (not just final poses): 1) text↔text · 2) text↔object · 3) object↔object · 4) label↔arrow · 5) unexpected wrapping · 6) text clipping · 7) outside canvas/margins · 8) mid-motion intersections (packets through labels, characters through props) · 9) heroes obscured by overlays/halos · 10) overcrowding vs the scene's element budget.
+- Corridor check: every declared animation path's swept bbox vs every static bbox.
+- Max-digit measurement for counters (widest value must fit).
+- Re-inspect the SAME frames after every fix.
+- Include verbatim: **"Successful code execution does not prove that a scene is visually correct."**
+
+## 24. QUALITY ASSURANCE
+**Generator-side, before emitting:** complete narrative analysis exists · concepts cover 0:00→end, no gaps · every concept has all 21 fields · every asset verified or flagged `VERIFY-PATH` · every event has phrase+time+frame · every scene has bbox table + whitelist · tokens consistent (role colors, type tiers) · no reference-copying (§5) · §25 format complete.
+**Required of the coding agent:** `hyperframes check` = 0 findings · snapshots at every concept's validation frames inspected against expected states · §23 collision checklist walked · sync spot-checks (freeze at 3 phrase times; visual state must match narration) · full render after approval · defects logged in `validation/` with fix + re-check evidence.
+
+## 25. FINAL PRODUCTION-PROMPT FORMAT (the document you emit — exactly these sections)
+```
+PRODUCTION PROMPT — <title>
+0. PROJECT PARAMETERS      fps, canvas, audio duration/frames, timing provenance (MEASURED/ESTIMATED), world palette (role→hex)
+1. PROJECT OVERVIEW        mission, audience, one-sentence core message, tone
+2. NARRATIVE ANALYSIS      skeleton with timestamps; claims; numbers inventory; quoted-speech inventory
+3. VISUAL DIRECTION        style lock summary, worlds used + switch map, recurring motifs for THIS video
+4. DESIGN-SYSTEM SPECS     tokens referenced (colors/type/spacing/dim/animation) + any project overrides
+5. CANVAS & LAYOUT RULES   margins, chrome bands, ground lines, grid, negative-space targets
+6. ASSET-LIBRARY REFERENCES global asset inventory table (§22) + manifest sources + resolution rule
+7. CHARACTER & ENVIRONMENT ASSIGNMENTS   per scene: world, characters (pose/expression), environment deltas
+8. COMPLETE CONCEPT BREAKDOWN   the C01..Cn list w/ type, importance, ranges (the map of §8)
+9. TIMESTAMPED VISUAL BEATS      one-line beat index (id, range, H1, kit, transition) for fast navigation
+10. SCENE-BY-SCENE SPECIFICATIONS  the full §20 blocks (21 fields each) — the body of the document
+11. ANIMATION INSTRUCTIONS        consolidated ordered sequences + recipe ids + initial/final states
+12. PHRASE-LEVEL AUDIO SYNC       all sync-cue tables + lead values + ESTIMATED flags
+13. TYPOGRAPHY & OBJECT SIZING    exact strings, tiers, bboxes, max-digit notes
+14. TRANSITIONS & CONTINUITY      boundary table (carrier | cut | reason)
+15. NEW ASSET REQUIREMENTS        NEW-* specs (or "none")
+16. HYPERFRAMES IMPLEMENTATION    §21 statement (structure, helpers, determinism, gates)
+17. COLLISION PREVENTION          §23 tables, corridors, whitelist, mandated loop + the verbatim statement
+18. VALIDATION REQUIREMENTS       checklist the agent must complete (§24)
+19. RENDER INSPECTION CHECKPOINTS frame list per concept + expected states
+20. FINAL ACCEPTANCE CRITERIA     what "done" means (gates + visual + sync + originality)
+```
+Tailored to the ACTUAL transcript — never a generic video prompt. This is the handoff document; the coding agent must not have to invent storyboard or animation decisions that belong in §10.
+
+## 26. VALIDATION & COMPLIANCE CHECKLIST (answer honestly in your final reply)
+- [ ] Inputs actually analyzed; anything inaccessible disclosed; ESTIMATED timings flagged.
+- [ ] Entire story understood before scenes were designed; skeleton mapped with timestamps.
+- [ ] Concepts extracted by meaning; segmentation contiguous 0:00→end; every meaningful section has a spec.
+- [ ] Every concept has all 21 mandatory fields; no empty/padded beats.
+- [ ] 9-step reasoning executed per concept (visible in the spec's choices).
+- [ ] Assets: only verified real assets (or VERIFY-PATH flagged); global inventory table present; relative paths only.
+- [ ] Kits selected with deltas; no kit repeated unadapted; new assets spec'd in-language.
+- [ ] Bbox tables + corridors + intended-overlap whitelist for every scene; counter max-digit measured.
+- [ ] Phrase-level sync with frames; lead rule stated; numbers bound to spoken values.
+- [ ] HyperFrames section present and matches the real toolchain (data-attrs, GSAP, check/snapshot/render gates); no invented APIs.
+- [ ] The verbatim statement "Successful code execution does not prove that a scene is visually correct." present.
+- [ ] Originality: no reference frames/shots/illustrations/wording reproduced; new metaphors inventoried for this topic.
+- [ ] Output follows §25 exactly; title + transcript + audio are its only inputs; no reference video required downstream.
+
+---
+
+*Usage: paste this file into ChatGPT, then provide title + timestamped transcript + audio. Attach `VISUAL_SYSTEM_SPECIFICATION.md` + `manifests/` when possible. Emit one PRODUCTION PROMPT (§25) → hand it to the coding agent → they build with HyperFrames and this library.*
 
 # VISUAL_SYSTEM_SPECIFICATION
 
